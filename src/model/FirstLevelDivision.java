@@ -1,37 +1,24 @@
 package model;
 
-import dao.LoginDao;
-import utils.TimezoneConverter;
-
 import java.sql.Timestamp;
 
-public class Customer {
+public class FirstLevelDivision {
     private int id;
-    private String name;
-    private String address;
-    private String postalCode;
-    private String phone;
+    private int name;
     private Timestamp createDate;
     private String createdBy;
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
+    private int countryId;
 
-    public Customer() {
-        this.createDate = TimezoneConverter.getUTCTime();
-        this.lastUpdate = TimezoneConverter.getUTCTime();
-        this.createdBy = LoginDao.getCurrentUser().getName();
-        this.lastUpdatedBy = LoginDao.getCurrentUser().getName();
-    }
-
-    public Customer(String name, String address, String postalCode, String phone, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy) {
+    public FirstLevelDivision(int id, int name, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryId) {
+        this.id = id;
         this.name = name;
-        this.address = address;
-        this.postalCode = postalCode;
-        this.phone = phone;
         this.createDate = createDate;
         this.createdBy = createdBy;
         this.lastUpdate = lastUpdate;
         this.lastUpdatedBy = lastUpdatedBy;
+        this.countryId = countryId;
     }
 
     public int getId() {
@@ -42,36 +29,12 @@ public class Customer {
         this.id = id;
     }
 
-    public String getName() {
+    public int getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(int name) {
         this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public Timestamp getCreateDate() {
@@ -104,5 +67,13 @@ public class Customer {
 
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 }
