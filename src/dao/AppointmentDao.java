@@ -23,6 +23,7 @@ public class AppointmentDao {
             PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
+            appointmentList.clear();
 
             while (resultSet.next()) {
                 Timestamp localStart = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Start"));
