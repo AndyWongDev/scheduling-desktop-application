@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Appointment {
     private int id;
@@ -8,18 +8,12 @@ public class Appointment {
     private String description;
     private String location;
     private String type;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private Timestamp start;
+    private Timestamp end;
     private int customerId;
+    private int contactId;
 
-    public Appointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId) {
-        this.title = title;
-        this.description = description;
-        this.location = location;
-        this.type = type;
-        this.start = start;
-        this.end = end;
-        this.customerId = customerId;
+    public Appointment() {
     }
 
     public int getId() {
@@ -62,19 +56,19 @@ public class Appointment {
         this.type = type;
     }
 
-    public LocalDateTime getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(Timestamp start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(Timestamp end) {
         this.end = end;
     }
 
@@ -84,5 +78,13 @@ public class Appointment {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public int getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
     }
 }

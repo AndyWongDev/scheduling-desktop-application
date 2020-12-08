@@ -1,5 +1,6 @@
 package controller;
 
+import dao.AppointmentDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,28 +13,39 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
-
 public class MainMenuController implements Initializable {
-
-    ZonedDateTime zonedDateTime = ZonedDateTime.now();
-    LocalDateTime localDateTime = zonedDateTime.now().toLocalDateTime();
-    LocalDateTime utcDateTime = zonedDateTime.now(ZoneId.of("UTC")).toLocalDateTime();
-
     Stage stage;
     Parent scene;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        datePicker.setValue(localDateTime.toLocalDate());
+        /**
+         * Set default value of DatePicker to Today
+         */
+        datePicker.setValue(LocalDate.now());
+
+        /**
+         * Add properties from Appointment model
+         */
+        calendarTableView.setItems(AppointmentDao.getAppointmentList());
+        appIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
     }
 
     @FXML
