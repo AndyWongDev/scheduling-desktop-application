@@ -2,14 +2,19 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import utils.DBConnection;
 import utils.DBQuery;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +28,9 @@ public class LoginController implements Initializable {
     private ResourceBundle language;
     private Connection connection = DBConnection.getConnection();
     private Locale locale = Locale.getDefault();
+
+    Stage stage;
+    Parent scene;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -63,7 +71,7 @@ public class LoginController implements Initializable {
     private Label languageText;
 
     @FXML
-    void onActionLoginButton(ActionEvent event) throws SQLException {
+    void onActionLoginButton(ActionEvent event) throws SQLException, IOException {
         String selectStatement = "SELECT * FROM users WHERE User_Name=? AND Password=?";
         DBQuery.setPreparedStatement(connection, selectStatement);
         PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
@@ -79,6 +87,10 @@ public class LoginController implements Initializable {
 
         if (resultSet.next()) {
             System.out.println("Username and password found: " + resultSet.getString("User_Name"));
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
         } else {
             System.out.println("No username and password found.");
             messageText.setText(language.getString("messageText"));
