@@ -3,10 +3,12 @@ package dao;
 import controller.MainMenuController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import model.Appointment;
 import utils.DBConnection;
 import utils.DBQuery;
 import utils.TimezoneUtil;
+import utils.Warning;
 
 import java.sql.*;
 
@@ -20,9 +22,8 @@ public class AppointmentDao {
     public static ObservableList<Appointment> getAppointmentList(String selectedFilter) {
         Timestamp selectedDate = MainMenuController.getSelectedDate();
         String sqlStatement = "SELECT *, Start + INTERVAL ? HOUR as Local_Start, End + INTERVAL ? HOUR as Local_End FROM appointments";
-
         try {
-            switch(selectedFilter) {
+            switch (selectedFilter) {
                 case "View Month":
                     sqlStatement += " WHERE MONTH(Start) = ? AND YEAR(Start) = ?";
                     DBQuery.setPreparedStatement(connection, sqlStatement);
@@ -31,13 +32,14 @@ public class AppointmentDao {
                     sqlStatement += " WHERE WEEK(Start) = WEEK(?) AND YEAR(Start) = ?";
                     break;
             }
+            sqlStatement += " ORDER BY Start ASC";
 
             DBQuery.setPreparedStatement(connection, sqlStatement);
             PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
             preparedStatement.setInt(1, TimezoneUtil.getOffsetToLocalTime());
             preparedStatement.setInt(2, TimezoneUtil.getOffsetToLocalTime());
 
-            switch(selectedFilter) {
+            switch (selectedFilter) {
                 case "View Month":
                     preparedStatement.setInt(3, selectedDate.toLocalDateTime().getMonthValue());
                     preparedStatement.setInt(4, selectedDate.toLocalDateTime().getYear());
@@ -94,8 +96,8 @@ public class AppointmentDao {
             preparedStatement.setString(3, appointment.getLocation());
             preparedStatement.setInt(4, appointment.getContactId());
             preparedStatement.setString(5, appointment.getType());
-            preparedStatement.setTimestamp(6, TimezoneUtil.timestampWithOffset(appointment.getStart(), -TimezoneUtil.getOffsetToLocalTime()));
-            preparedStatement.setTimestamp(7, TimezoneUtil.timestampWithOffset(appointment.getEnd(), -TimezoneUtil.getOffsetToLocalTime()));
+            preparedStatement.setTimestamp(6, appointment.getStart());
+            preparedStatement.setTimestamp(7, appointment.getEnd());
             preparedStatement.setInt(8, appointment.getCustomerId());
 
             preparedStatement.execute();
@@ -148,5 +150,41 @@ public class AppointmentDao {
 
     public void setAppointmentList(ObservableList<Appointment> appointmentList) {
         this.appointmentList = appointmentList;
+    }
+
+    private static Boolean hasAppointmentConflicts(Appointment appointment) {
+        String selectStatement = "SELECT Local_Start, Local_End " +
+                "FROM (SELECT Start + INTERVAL ? HOUR as Local_Start, End + INTERVAL ? HOUR as Local_End " +
+                "FROM appointments " +
+                "WHERE Customer_ID = ?) LocalTimeTable " +
+                "WHERE Local_Start < ? " +
+                "AND Local_End > ?";
+
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setInt(1, TimezoneUtil.getOffsetToLocalTime());
+            preparedStatement.setInt(2, TimezoneUtil.getOffsetToLocalTime());
+            preparedStatement.setInt(3, appointment.getCustomerId());
+            preparedStatement.setTimestamp(4, appointment.getEnd());
+            preparedStatement.setTimestamp(5, appointment.getStart());
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+
+            if (resultSet.next()) {
+                Warning.generateMessage("Schedule Conflict with appointment(s)", Alert.AlertType.ERROR);
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Boolean isValidAppointment(Appointment appointment) {
+        return (!hasAppointmentConflicts(appointment) && TimezoneUtil.isOfficeHours(appointment));
     }
 }

@@ -31,8 +31,8 @@ public class AddAppointmentController implements Initializable {
         customerDropdown.setItems(CustomerDao.getCustomerNameList());
         startDatePicker.setValue(LocalDate.now());
         endDatePicker.setValue(LocalDate.now());
-        startText.setText("00:00");
-        endText.setText("01:00");
+        startText.setText("08:00:00");
+        endText.setText("21:59:59");
     }
 
     @FXML
@@ -109,15 +109,16 @@ public class AddAppointmentController implements Initializable {
             appointment.setEnd(endTimestamp);
             appointment.setCustomerId(customerId);
 
-            Boolean result = AppointmentDao.addAppointment(appointment);
-
-            if (result) {
-                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
-                stage.setScene(new Scene(scene));
-                stage.show();
-            } else {
-                Warning.generateMessage("Invalid Inputs, try again", Alert.AlertType.ERROR);
+            if (AppointmentDao.isValidAppointment(appointment)) {
+                Boolean result = AppointmentDao.addAppointment(appointment);
+                if (result) {
+                    stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                } else {
+                    Warning.generateMessage("Invalid Inputs, try again", Alert.AlertType.ERROR);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

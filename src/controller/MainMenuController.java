@@ -214,8 +214,6 @@ public class MainMenuController implements Initializable {
     @FXML
     void onActionDatePicker(ActionEvent event) {
         selectedDate = Timestamp.valueOf(datePicker.getValue().atStartOfDay());
-        System.out.println(selectedDate);
-        System.out.println(TimezoneUtil.timestampWithOffset(selectedDate, TimezoneUtil.getOffsetToLocalTime()));
         String selectedFilter = ((RadioButton)viewToggle.getSelectedToggle()).getText();
         calendarTableView.setItems(AppointmentDao.getAppointmentList(selectedFilter));
     }

@@ -142,15 +142,17 @@ public class ModifyAppointmentController implements Initializable {
             appointment.setStart(startTimestamp);
             appointment.setEnd(endTimestamp);
             appointment.setCustomerId(customerId);
-            Boolean result = AppointmentDao.updateAppointment(appointment);
 
-            if (result) {
-                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
-                stage.setScene(new Scene(scene));
-                stage.show();
-            } else {
-                Warning.generateMessage("Invalid Inputs, try again", Alert.AlertType.ERROR);
+            if (AppointmentDao.isValidAppointment(appointment)) {
+                Boolean result = AppointmentDao.updateAppointment(appointment);
+                if (result) {
+                    stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                    scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                } else {
+                    Warning.generateMessage("Invalid Inputs, try again", Alert.AlertType.ERROR);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
