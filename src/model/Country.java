@@ -10,13 +10,7 @@ public class Country {
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
 
-    public Country(int id, String country, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy) {
-        this.id = id;
-        this.country = country;
-        this.createDate = createDate;
-        this.createdBy = createdBy;
-        this.lastUpdate = lastUpdate;
-        this.lastUpdatedBy = lastUpdatedBy;
+    public Country() {
     }
 
     public int getId() {

@@ -4,21 +4,21 @@ import java.sql.Timestamp;
 
 public class FirstLevelDivision {
     private int id;
-    private int name;
+    private String name;
     private Timestamp createDate;
     private String createdBy;
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
-    private int countryId;
+    private int divisionId;
 
-    public FirstLevelDivision(int id, int name, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryId) {
+    public FirstLevelDivision(int id, String name, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int divisionId) {
         this.id = id;
         this.name = name;
         this.createDate = createDate;
         this.createdBy = createdBy;
         this.lastUpdate = lastUpdate;
         this.lastUpdatedBy = lastUpdatedBy;
-        this.countryId = countryId;
+        this.divisionId = divisionId;
     }
 
     public int getId() {
@@ -29,11 +29,11 @@ public class FirstLevelDivision {
         this.id = id;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -69,11 +69,11 @@ public class FirstLevelDivision {
         this.lastUpdatedBy = lastUpdatedBy;
     }
 
-    public int getCountryId() {
-        return countryId;
+    public int getDivisionId() {
+        return divisionId;
     }
 
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
+    public void setDivisionId(int divisionId) {
+        this.divisionId = divisionId;
     }
 }

@@ -15,6 +15,7 @@ public class Customer {
     private String createdBy;
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
+    private int divisionId;
 
     public Customer() {
         this.createDate = TimezoneConverter.getUTCTime();
@@ -23,15 +24,16 @@ public class Customer {
         this.lastUpdatedBy = LoginDao.getCurrentUser().getName();
     }
 
-    public Customer(String name, String address, String postalCode, String phone, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy) {
+    public Customer(String name, String address, String postalCode, String phone, int divisionId) {
         this.name = name;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.createDate = createDate;
-        this.createdBy = createdBy;
-        this.lastUpdate = lastUpdate;
-        this.lastUpdatedBy = lastUpdatedBy;
+        this.divisionId = divisionId;
+        this.createDate = TimezoneConverter.getUTCTime();
+        this.lastUpdate = TimezoneConverter.getUTCTime();
+        this.createdBy = LoginDao.getCurrentUser().getName();
+        this.lastUpdatedBy = LoginDao.getCurrentUser().getName();
     }
 
     public int getId() {
@@ -104,5 +106,13 @@ public class Customer {
 
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public int getDivisionId() {
+        return divisionId;
+    }
+
+    public void setDivisionId(int divisionId) {
+        this.divisionId = divisionId;
     }
 }
