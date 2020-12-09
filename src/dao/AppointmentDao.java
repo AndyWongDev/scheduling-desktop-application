@@ -187,4 +187,31 @@ public class AppointmentDao {
     public static Boolean isValidAppointment(Appointment appointment) {
         return (!hasAppointmentConflicts(appointment) && TimezoneUtil.isOfficeHours(appointment));
     }
+
+    public static void getUpcomingAppointment() {
+        String selectStatement = "SELECT * " +
+                "FROM appointments " +
+                "WHERE Start > NOW() + INTERVAL -15 MINUTE";
+
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("Appointment_ID");
+                Timestamp start = resultSet.getTimestamp("Start");
+
+                String appointmentNotification = String.format("Upcoming Appointment! ID: %s Start: %s",id, start.toString());
+                Warning.generateMessage(appointmentNotification, Alert.AlertType.INFORMATION);
+            } else {
+                Warning.generateMessage("No Appointments Coming Up in 15 Minutes", Alert.AlertType.INFORMATION);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

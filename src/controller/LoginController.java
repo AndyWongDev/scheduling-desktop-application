@@ -1,5 +1,6 @@
 package controller;
 
+import dao.AppointmentDao;
 import dao.LoginDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -79,6 +80,11 @@ public class LoginController implements Initializable {
             scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
             stage.setScene(new Scene(scene));
             stage.show();
+
+            /**
+             * Upcoming Appointment Checks
+             */
+            AppointmentDao.getUpcomingAppointment();
         } else {
             messageText.setText(language.getString("messageText"));
         }
