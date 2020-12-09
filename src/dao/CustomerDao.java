@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import model.Customer;
 import utils.DBConnection;
 import utils.DBQuery;
-import utils.TimezoneConverter;
+import utils.TimezoneUtil;
 
 import java.sql.*;
 
@@ -78,7 +78,7 @@ public class CustomerDao {
             preparedStatement.setString(2, customer.getAddress());
             preparedStatement.setString(3, customer.getPostalCode());
             preparedStatement.setString(4, customer.getPhone());
-            preparedStatement.setTimestamp(5, TimezoneConverter.getUTCTime());
+            preparedStatement.setTimestamp(5, TimezoneUtil.getUTCTime());
             preparedStatement.setString(6, customer.getCreatedBy());
             preparedStatement.setTimestamp(7, customer.getLastUpdate());
             preparedStatement.setString(8, customer.getLastUpdatedBy());
@@ -105,7 +105,7 @@ public class CustomerDao {
             preparedStatement.setString(2, customer.getAddress());
             preparedStatement.setString(3, customer.getPostalCode());
             preparedStatement.setString(4, customer.getPhone());
-            preparedStatement.setTimestamp(5, TimezoneConverter.getUTCTime());
+            preparedStatement.setTimestamp(5, TimezoneUtil.getUTCTime());
             preparedStatement.setString(6, LoginDao.getCurrentUser().getName());
             preparedStatement.setInt(7, customer.getDivisionId());
             preparedStatement.setInt(8, customer.getId());

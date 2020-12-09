@@ -6,9 +6,9 @@ import javafx.collections.ObservableList;
 import model.Appointment;
 import utils.DBConnection;
 import utils.DBQuery;
+import utils.TimezoneUtil;
 
 import java.sql.*;
-import java.time.LocalDate;
 
 public class AppointmentDao {
     private static Connection connection = DBConnection.getConnection();
@@ -18,8 +18,8 @@ public class AppointmentDao {
     }
 
     public static ObservableList<Appointment> getAppointmentList(String selectedFilter) {
-        LocalDate selectedDate = MainMenuController.getSelectedDate();
-        String sqlStatement = "SELECT * FROM appointments";
+        Timestamp selectedDate = MainMenuController.getSelectedDate();
+        String sqlStatement = "SELECT *, Start + INTERVAL ? HOUR as Local_Start, End + INTERVAL ? HOUR as Local_End FROM appointments";
 
         try {
             switch(selectedFilter) {
@@ -34,15 +34,17 @@ public class AppointmentDao {
 
             DBQuery.setPreparedStatement(connection, sqlStatement);
             PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+            preparedStatement.setInt(1, TimezoneUtil.getOffsetToLocalTime());
+            preparedStatement.setInt(2, TimezoneUtil.getOffsetToLocalTime());
 
             switch(selectedFilter) {
                 case "View Month":
-                    preparedStatement.setInt(1, selectedDate.getMonthValue());
-                    preparedStatement.setInt(2, selectedDate.getYear());
+                    preparedStatement.setInt(3, selectedDate.toLocalDateTime().getMonthValue());
+                    preparedStatement.setInt(4, selectedDate.toLocalDateTime().getYear());
                     break;
                 case "View Week":
-                    preparedStatement.setString(1, selectedDate.toString());
-                    preparedStatement.setInt(2, selectedDate.getYear());
+                    preparedStatement.setString(3, selectedDate.toString());
+                    preparedStatement.setInt(4, selectedDate.toLocalDateTime().getYear());
                     break;
             }
 
@@ -92,8 +94,8 @@ public class AppointmentDao {
             preparedStatement.setString(3, appointment.getLocation());
             preparedStatement.setInt(4, appointment.getContactId());
             preparedStatement.setString(5, appointment.getType());
-            preparedStatement.setTimestamp(6, appointment.getStart());
-            preparedStatement.setTimestamp(7, appointment.getEnd());
+            preparedStatement.setTimestamp(6, TimezoneUtil.timestampWithOffset(appointment.getStart(), -TimezoneUtil.getOffsetToLocalTime()));
+            preparedStatement.setTimestamp(7, TimezoneUtil.timestampWithOffset(appointment.getEnd(), -TimezoneUtil.getOffsetToLocalTime()));
             preparedStatement.setInt(8, appointment.getCustomerId());
 
             preparedStatement.execute();

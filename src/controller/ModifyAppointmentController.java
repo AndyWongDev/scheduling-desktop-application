@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
-import utils.TimezoneConverter;
+import utils.TimezoneUtil;
 import utils.Warning;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class ModifyAppointmentController implements Initializable {
         LocalDate startDate = startLDT.toLocalDate();
         String startTime = startLDT.toLocalTime().toString();
 
-        LocalDateTime endLDT = selectedAppointment.getStart().toLocalDateTime();
+        LocalDateTime endLDT = selectedAppointment.getEnd().toLocalDateTime();
         LocalDate endDate = endLDT.toLocalDate();
         String endTime = endLDT.toLocalTime().toString();
 
@@ -129,8 +129,8 @@ public class ModifyAppointmentController implements Initializable {
             String endTime = endText.getText();
             int customerId = CustomerDao.getCustomerIdFromName(customerDropdown.getValue());
 
-            Timestamp startTimestamp = TimezoneConverter.timestampFormatter(startDate, startTime);
-            Timestamp endTimestamp = TimezoneConverter.timestampFormatter(endDate, endTime);
+            Timestamp startTimestamp = TimezoneUtil.timestampFormatter(startDate, startTime);
+            Timestamp endTimestamp = TimezoneUtil.timestampFormatter(endDate, endTime);
 
             Appointment appointment = new Appointment();
             appointment.setId(id);

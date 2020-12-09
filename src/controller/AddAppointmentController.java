@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
-import utils.TimezoneConverter;
+import utils.TimezoneUtil;
 import utils.Warning;
 
 import java.io.IOException;
@@ -96,8 +96,8 @@ public class AddAppointmentController implements Initializable {
             String endTime = endText.getText();
             int customerId = CustomerDao.getCustomerIdFromName(customerDropdown.getValue());
 
-            Timestamp startTimestamp = TimezoneConverter.timestampFormatter(startDate, startTime);
-            Timestamp endTimestamp = TimezoneConverter.timestampFormatter(endDate, endTime);
+            Timestamp startTimestamp = TimezoneUtil.timestampFormatter(startDate, startTime);
+            Timestamp endTimestamp = TimezoneUtil.timestampFormatter(endDate, endTime);
 
             Appointment appointment = new Appointment();
             appointment.setTitle(title);

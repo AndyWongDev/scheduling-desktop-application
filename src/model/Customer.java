@@ -2,7 +2,7 @@ package model;
 
 import dao.FirstLevelDivisionDao;
 import dao.LoginDao;
-import utils.TimezoneConverter;
+import utils.TimezoneUtil;
 
 import java.sql.Timestamp;
 
@@ -20,8 +20,8 @@ public class Customer {
     private String formattedAddress;
 
     public Customer() {
-        this.createDate = TimezoneConverter.getUTCTime();
-        this.lastUpdate = TimezoneConverter.getUTCTime();
+        this.createDate = TimezoneUtil.getUTCTime();
+        this.lastUpdate = TimezoneUtil.getUTCTime();
         this.createdBy = LoginDao.getCurrentUser().getName();
         this.lastUpdatedBy = LoginDao.getCurrentUser().getName();
         this.formattedAddress = getFormattedAddress();
@@ -57,8 +57,8 @@ public class Customer {
         this.postalCode = postalCode;
         this.phone = phone;
         this.divisionId = divisionId;
-        this.createDate = TimezoneConverter.getUTCTime();
-        this.lastUpdate = TimezoneConverter.getUTCTime();
+        this.createDate = TimezoneUtil.getUTCTime();
+        this.lastUpdate = TimezoneUtil.getUTCTime();
         this.createdBy = LoginDao.getCurrentUser().getName();
         this.lastUpdatedBy = LoginDao.getCurrentUser().getName();
         this.formattedAddress = getFormattedAddress();

@@ -13,19 +13,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
+import utils.TimezoneUtil;
 import utils.Warning;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
     private static Appointment selectedAppointment;
     private static Customer selectedCustomer;
-    private static LocalDate selectedDate = LocalDate.now();
+    private static Timestamp selectedDate = TimezoneUtil.getUTCTime();
 
     Stage stage;
     Parent scene;
@@ -35,7 +35,7 @@ public class MainMenuController implements Initializable {
         /**
          * Set default value of DatePicker
          */
-        datePicker.setValue(selectedDate);
+        datePicker.setValue(selectedDate.toLocalDateTime().toLocalDate());
 
         /**
          * Add properties from Appointment model
@@ -213,7 +213,9 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void onActionDatePicker(ActionEvent event) {
-        selectedDate = datePicker.getValue();
+        selectedDate = Timestamp.valueOf(datePicker.getValue().atStartOfDay());
+        System.out.println(selectedDate);
+        System.out.println(TimezoneUtil.timestampWithOffset(selectedDate, TimezoneUtil.getOffsetToLocalTime()));
         String selectedFilter = ((RadioButton)viewToggle.getSelectedToggle()).getText();
         calendarTableView.setItems(AppointmentDao.getAppointmentList(selectedFilter));
     }
@@ -226,7 +228,7 @@ public class MainMenuController implements Initializable {
         return selectedCustomer;
     }
 
-    public static LocalDate getSelectedDate() {
+    public static Timestamp getSelectedDate() {
         return selectedDate;
     }
 
