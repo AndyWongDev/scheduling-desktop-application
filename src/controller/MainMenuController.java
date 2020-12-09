@@ -2,7 +2,6 @@ package controller;
 
 import dao.AppointmentDao;
 import dao.CustomerDao;
-import dao.FirstLevelDivisionDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -182,10 +181,15 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void onActionModifyAppointmentButton(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        selectedAppointment = calendarTableView.getSelectionModel().getSelectedItem();
+        if (calendarTableView.getSelectionModel().isEmpty()) {
+            Warning.generateMessage("No Appointment was selected in the Tableview!", Alert.AlertType.WARNING);
+        } else {
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/ModifyAppointment.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
     @FXML

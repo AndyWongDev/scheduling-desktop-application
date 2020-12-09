@@ -35,9 +35,9 @@ public class FirstLevelDivisionDao {
             while (resultSet.next()) {
                 int id = resultSet.getInt("Division_ID");
                 String division = resultSet.getString("Division");
-                Timestamp createDate = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Create_Date"));
+                Timestamp createDate = resultSet.getTimestamp("Create_Date");
                 String createdBy = resultSet.getString("Created_By");
-                Timestamp lastUpdate = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Last_Update"));
+                Timestamp lastUpdate = resultSet.getTimestamp("Last_Update");
                 String lastUpdatedBy = resultSet.getString("Last_Updated_By");
                 int countryId = resultSet.getInt("COUNTRY_ID");
 

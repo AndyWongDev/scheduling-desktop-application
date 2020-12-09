@@ -26,15 +26,12 @@ public class CountryDao {
             countryList.clear();
 
             while (resultSet.next()) {
-                Timestamp localCreateDate = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Create_Date"));
-                Timestamp localLastUpdate = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Last_Update"));
-
                 Country currentCountry = new Country();
                 currentCountry.setId(resultSet.getInt("Country_ID"));
                 currentCountry.setCountry(resultSet.getString("Country"));
-                currentCountry.setCreateDate(localCreateDate);
+                currentCountry.setCreateDate(resultSet.getTimestamp("Create_Date"));
                 currentCountry.setCreatedBy(resultSet.getString("Created_By"));
-                currentCountry.setCreateDate(localLastUpdate);
+                currentCountry.setCreateDate(resultSet.getTimestamp("Last_Update"));
                 currentCountry.setCreatedBy(resultSet.getString("Last_Updated_By"));
 
                 countryList.add(currentCountry.getCountry());

@@ -13,7 +13,6 @@ public class CustomerDao {
     private static Connection connection = DBConnection.getConnection();
     private static ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
-
     CustomerDao() {
     }
 
@@ -32,9 +31,9 @@ public class CustomerDao {
                 String address = resultSet.getString("Address");
                 String postalCode = resultSet.getString("Postal_Code");
                 String phone = resultSet.getString("Phone");
-                Timestamp createDate = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Create_Date"));
+                Timestamp createDate = resultSet.getTimestamp("Create_Date");
                 String createdBy = resultSet.getString("Created_By");
-                Timestamp lastUpdate = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Last_Update"));
+                Timestamp lastUpdate = resultSet.getTimestamp("Last_Update");
                 String lastUpdatedBy = resultSet.getString("Last_Updated_By");
                 int divisionId = resultSet.getInt("Division_ID");
 
@@ -45,6 +44,14 @@ public class CustomerDao {
             e.printStackTrace();
         }
         return customerList;
+    }
+
+    public static ObservableList<String> getCustomerNameList() {
+        ObservableList<String> customerNameList = FXCollections.observableArrayList();
+        for (Customer customer : customerList) {
+            customerNameList.add(customer.getName());
+        }
+        return customerNameList;
     }
 
     public static Boolean addCustomer(Customer customer) {
@@ -118,5 +125,26 @@ public class CustomerDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static int getCustomerIdFromName(String name) {
+        String selectStatement = "SELECT Customer_ID " +
+                "FROM customers " +
+                "WHERE Customer_Name = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setString(1, name);
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                return resultSet.getInt("Customer_ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

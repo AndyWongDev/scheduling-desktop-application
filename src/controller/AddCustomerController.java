@@ -93,6 +93,5 @@ public class AddCustomerController implements Initializable {
             e.printStackTrace();
         }
     }
-
 }
 
