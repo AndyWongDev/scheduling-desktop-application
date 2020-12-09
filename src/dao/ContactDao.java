@@ -19,6 +19,7 @@ public class ContactDao {
 
     public static ObservableList<String> getContactList() {
         String selectStatement = "SELECT * FROM contacts";
+        contactList.clear();
         try {
             DBQuery.setPreparedStatement(connection, selectStatement);
             PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
@@ -53,5 +54,26 @@ public class ContactDao {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public static String getContactNameFromId(int id) {
+        String selectStatement = "SELECT Contact_Name " +
+                "FROM contacts " +
+                "WHERE Contact_ID = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                return resultSet.getString("Contact_Name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "N/A";
     }
 }

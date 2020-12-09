@@ -29,6 +29,10 @@ public class AddAppointmentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         contactDropdown.setItems(ContactDao.getContactList());
         customerDropdown.setItems(CustomerDao.getCustomerNameList());
+        startDatePicker.setValue(LocalDate.now());
+        endDatePicker.setValue(LocalDate.now());
+        startText.setText("00:00");
+        endText.setText("01:00");
     }
 
     @FXML

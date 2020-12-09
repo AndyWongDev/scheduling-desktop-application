@@ -3,6 +3,7 @@ package dao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.Customer;
 import utils.DBConnection;
 import utils.DBQuery;
 import utils.TimezoneConverter;
@@ -80,6 +81,44 @@ public class AppointmentDao {
         return false;
     }
 
+    public static Boolean updateAppointment(Appointment appointment) {
+        String selectStatement = "UPDATE appointments " +
+                "SET Title = ?, Description = ?, Location = ?, Contact_ID = ?, Type = ?, Start = ?, End = ?, Customer_ID = ? " +
+                "WHERE Appointment_ID = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setString(1, appointment.getTitle());
+            preparedStatement.setString(2, appointment.getDescription());
+            preparedStatement.setString(3, appointment.getLocation());
+            preparedStatement.setInt(4, appointment.getContactId());
+            preparedStatement.setString(5, appointment.getType());
+            preparedStatement.setTimestamp(6, appointment.getStart());
+            preparedStatement.setTimestamp(7, appointment.getEnd());
+            preparedStatement.setInt(8, appointment.getCustomerId());
+            preparedStatement.setInt(9, appointment.getId());
+
+            preparedStatement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void deleteAppointment(int id) {
+        String selectStatement = "DELETE FROM appointments WHERE Appointment_ID = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setAppointmentList(ObservableList<Appointment> appointmentList) {
         this.appointmentList = appointmentList;

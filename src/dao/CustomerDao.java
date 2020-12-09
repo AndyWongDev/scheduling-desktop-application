@@ -147,4 +147,25 @@ public class CustomerDao {
         }
         return -1;
     }
+
+    public static String getCustomerNameFromId(int id) {
+        String selectStatement = "SELECT Customer_Name " +
+                "FROM customers " +
+                "WHERE Customer_ID = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                return resultSet.getString("Customer_Name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "N/A";
+    }
 }
