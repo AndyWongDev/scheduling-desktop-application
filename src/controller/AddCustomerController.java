@@ -16,12 +16,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Customer;
-import model.FirstLevelDivision;
 import utils.Warning;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {

@@ -1,5 +1,6 @@
 package model;
 
+import dao.FirstLevelDivisionDao;
 import dao.LoginDao;
 import utils.TimezoneConverter;
 
@@ -16,12 +17,28 @@ public class Customer {
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
     private int divisionId;
+    private String formattedAddress;
 
     public Customer() {
         this.createDate = TimezoneConverter.getUTCTime();
         this.lastUpdate = TimezoneConverter.getUTCTime();
         this.createdBy = LoginDao.getCurrentUser().getName();
         this.lastUpdatedBy = LoginDao.getCurrentUser().getName();
+        this.formattedAddress = getFormattedAddress();
+    }
+
+    public Customer(int id, String name, String address, String postalCode, String phone, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int divisionId) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.createDate = createDate;
+        this.createdBy = createdBy;
+        this.lastUpdate = lastUpdate;
+        this.lastUpdatedBy = lastUpdatedBy;
+        this.divisionId = divisionId;
+        this.formattedAddress = getFormattedAddress();
     }
 
     public Customer(String name, String address, String postalCode, String phone, int divisionId) {
@@ -34,6 +51,7 @@ public class Customer {
         this.lastUpdate = TimezoneConverter.getUTCTime();
         this.createdBy = LoginDao.getCurrentUser().getName();
         this.lastUpdatedBy = LoginDao.getCurrentUser().getName();
+        this.formattedAddress = getFormattedAddress();
     }
 
     public int getId() {
@@ -114,5 +132,9 @@ public class Customer {
 
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
+    }
+
+    public String getFormattedAddress() {
+        return address + ", " + FirstLevelDivisionDao.getDivisionFromId(divisionId);
     }
 }

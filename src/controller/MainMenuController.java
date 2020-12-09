@@ -1,6 +1,8 @@
 package controller;
 
 import dao.AppointmentDao;
+import dao.CustomerDao;
+import dao.FirstLevelDivisionDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +18,15 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Customer;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+
 public class MainMenuController implements Initializable {
     Stage stage;
     Parent scene;
@@ -41,11 +46,25 @@ public class MainMenuController implements Initializable {
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
         endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
-        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        appCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+
+        /**
+         * Add properties from Customer model
+         */
+        customerTableView.setItems(CustomerDao.getCustomerList());
+        customerIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameIdCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("formattedAddress"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        createDateCol.setCellValueFactory(new PropertyValueFactory<>("createDate"));
+        createdByCol.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
+        lastUpdateCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+        lastUpdatedByCol.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
+        divisionIdCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
     }
 
     @FXML
@@ -78,6 +97,10 @@ public class MainMenuController implements Initializable {
     @FXML
     private DatePicker datePicker;
 
+    /**
+     * Appointment Table View
+     */
+
     @FXML
     private TableView<Appointment> calendarTableView;
 
@@ -106,7 +129,41 @@ public class MainMenuController implements Initializable {
     private TableColumn<Appointment, LocalDateTime> endCol;
 
     @FXML
+    private TableColumn<Appointment, Integer> appCustomerIdCol;
+
+    /**
+     * Customer Table View
+     */
+
+    @FXML
     private TableColumn<Appointment, Integer> customerIdCol;
+
+    @FXML
+    private TableView<Customer> customerTableView;
+
+    @FXML
+    private TableColumn<Customer, Integer> nameIdCol;
+
+    @FXML
+    private TableColumn<Customer, String> addressCol;
+
+    @FXML
+    private TableColumn<Customer, String> phoneCol;
+
+    @FXML
+    private TableColumn<Customer, Timestamp> createDateCol;
+
+    @FXML
+    private TableColumn<Customer, String> createdByCol;
+
+    @FXML
+    private TableColumn<Customer, Timestamp> lastUpdateCol;
+
+    @FXML
+    private TableColumn<Customer, String> lastUpdatedByCol;
+
+    @FXML
+    private TableColumn<Customer, Integer> divisionIdCol;
 
     @FXML
     void onActionAddAppointmentButton(ActionEvent event) throws IOException {

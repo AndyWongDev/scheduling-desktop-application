@@ -7,15 +7,44 @@ import utils.DBConnection;
 import utils.DBQuery;
 import utils.TimezoneConverter;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CustomerDao {
     private static Connection connection = DBConnection.getConnection();
-    private static ObservableList<String> countryList = FXCollections.observableArrayList();
+    private static ObservableList<Customer> customerList = FXCollections.observableArrayList();
+
 
     CustomerDao() {
+    }
+
+    public static ObservableList<Customer> getCustomerList() {
+        String selectStatement = "SELECT * FROM customers";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            customerList.clear();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Customer_ID");
+                String name = resultSet.getString("Customer_Name");
+                String address = resultSet.getString("Address");
+                String postalCode = resultSet.getString("Postal_Code");
+                String phone = resultSet.getString("Phone");
+                Timestamp createDate = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Create_Date"));
+                String createdBy = resultSet.getString("Created_By");
+                Timestamp lastUpdate = TimezoneConverter.convertUTCtoLocal(resultSet.getTimestamp("Last_Update"));
+                String lastUpdatedBy = resultSet.getString("Last_Updated_By");
+                int divisionId = resultSet.getInt("Division_ID");
+
+                Customer currentCustomer = new Customer(id, name, address, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdatedBy, divisionId);
+                customerList.add(currentCustomer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerList;
     }
 
     public static Boolean addCustomer(Customer customer) {

@@ -34,11 +34,11 @@ public class AppointmentDao {
                 currentAppointment.setTitle(resultSet.getString("Title"));
                 currentAppointment.setDescription(resultSet.getString("Description"));
                 currentAppointment.setLocation(resultSet.getString("Location"));
+                currentAppointment.setContactId(resultSet.getInt("Contact_ID"));
                 currentAppointment.setType(resultSet.getString("Type"));
                 currentAppointment.setStart(localStart);
                 currentAppointment.setEnd(localEnd);
                 currentAppointment.setCustomerId(resultSet.getInt("Customer_ID"));
-                currentAppointment.setContactId(resultSet.getInt("Contact_ID"));
 
                 appointmentList.add(currentAppointment);
             }

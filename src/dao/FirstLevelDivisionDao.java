@@ -45,11 +45,9 @@ public class FirstLevelDivisionDao {
 
                 firstLevelDivisionList.add(firstLevelDivision.getName());
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return firstLevelDivisionList;
     }
 
@@ -72,5 +70,26 @@ public class FirstLevelDivisionDao {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public static String getDivisionFromId(int id) {
+        String selectStatement = "SELECT Division " +
+                "FROM first_level_divisions " +
+                "WHERE Division_ID=?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                return resultSet.getString("Division");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "N/A";
     }
 }

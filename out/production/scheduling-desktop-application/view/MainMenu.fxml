@@ -12,8 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
    <children>
       <Label layoutX="348.0" layoutY="12.0" text="Scheduling Desktop Application" />
       <Label layoutX="383.0" layoutY="36.0" text="Main Menu">
@@ -100,7 +99,7 @@
             </DatePicker>
          </children>
       </HBox>
-      <TableView fx:id="calendarTableView" layoutX="1.0" layoutY="166.0" prefHeight="420.0" prefWidth="900.0">
+      <TableView fx:id="calendarTableView" layoutX="1.0" layoutY="166.0" prefHeight="300.0" prefWidth="900.0">
         <columns>
           <TableColumn fx:id="appIdCol" prefWidth="63.0" text="App ID" />
           <TableColumn fx:id="titleCol" prefWidth="114.0" text="Title" />
@@ -110,8 +109,26 @@
             <TableColumn fx:id="typeCol" minWidth="0.0" prefWidth="82.0" text="Type" />
             <TableColumn fx:id="startCol" minWidth="2.0" prefWidth="71.0" text="Start" />
             <TableColumn fx:id="endCol" prefWidth="88.0" text="End" />
-            <TableColumn fx:id="customerIdCol" prefWidth="102.0" text="Customer ID" />
+            <TableColumn fx:id="appCustomerIdCol" prefWidth="102.0" text="Customer ID" />
         </columns>
+      </TableView>
+      <Label layoutX="383.0" layoutY="477.0" text="Customers">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <TableView fx:id="customerTableView" layoutY="507.0" prefHeight="300.0" prefWidth="900.0">
+         <columns>
+            <TableColumn fx:id="customerIdCol" prefWidth="63.0" text="Cus ID" />
+            <TableColumn fx:id="nameIdCol" prefWidth="114.0" text="Name" />
+            <TableColumn fx:id="addressCol" prefWidth="144.0" text="Address" />
+            <TableColumn fx:id="phoneCol" minWidth="0.0" prefWidth="104.0" text="Phone" />
+            <TableColumn fx:id="createDateCol" prefWidth="111.0" text="Create Date" />
+            <TableColumn fx:id="createdByCol" minWidth="0.0" prefWidth="96.0" text="Created By" />
+            <TableColumn fx:id="lastUpdateCol" minWidth="2.0" prefWidth="95.0" text="Last Update" />
+            <TableColumn fx:id="lastUpdatedByCol" minWidth="2.0" prefWidth="119.0" text="Last Update By" />
+            <TableColumn fx:id="divisionIdCol" minWidth="8.0" prefWidth="53.0" text="Div ID" />
+         </columns>
       </TableView>
    </children>
 </AnchorPane>
