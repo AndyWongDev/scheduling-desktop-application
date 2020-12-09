@@ -45,4 +45,48 @@ public class CountryDao {
         }
         return countryList;
     }
+
+    public static String getCountryFromId(int id) {
+        String selectStatement = "SELECT Country " +
+                "FROM countries " +
+                "WHERE Country_ID = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                return resultSet.getString("Country");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "N/A";
+    }
+
+    public static String getCountryFromFirstLevelDivisionId(int divisionId) {
+        String selectStatement = "SELECT Country " +
+                "FROM first_level_divisions fld " +
+                "INNER JOIN countries c " +
+                "ON fld.COUNTRY_ID = c.Country_ID " +
+                "WHERE fld.Division_ID = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setInt(1, divisionId);
+
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                return resultSet.getString("Country");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "N/A";
+    }
 }

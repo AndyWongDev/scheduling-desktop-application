@@ -47,7 +47,7 @@ public class AddCustomerController implements Initializable {
     private ChoiceBox<String> countryDropdown;
 
     @FXML
-    private ChoiceBox<String> firstNameDivisionsDropdown;
+    private ChoiceBox<String> firstLevelDivisionsDropdown;
 
     @FXML
     private Button cancelButton;
@@ -66,7 +66,7 @@ public class AddCustomerController implements Initializable {
     @FXML
     void onActionCountryDropdown(ActionEvent event) {
         ObservableList<String> firstLevelDivisionList = FirstLevelDivisionDao.getFirstLevelDivisionList(countryDropdown.getValue());
-        firstNameDivisionsDropdown.setItems(firstLevelDivisionList);
+        firstLevelDivisionsDropdown.setItems(firstLevelDivisionList);
     }
 
     @FXML
@@ -76,7 +76,7 @@ public class AddCustomerController implements Initializable {
             String address = addressText.getText();
             String postalCode = postalCodeText.getText();
             String phone = phoneText.getText();
-            int divisionId = FirstLevelDivisionDao.getIdFromDivision(firstNameDivisionsDropdown.getValue());
+            int divisionId = FirstLevelDivisionDao.getIdFromDivision(firstLevelDivisionsDropdown.getValue());
 
             Customer customer = new Customer(name, address, postalCode, phone, divisionId);
             Boolean result = CustomerDao.addCustomer(customer);

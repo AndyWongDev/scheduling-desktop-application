@@ -71,7 +71,7 @@
                         <Insets left="10.0" right="10.0" />
                      </padding>
                   </Label>
-                  <ChoiceBox fx:id="firstNameDivisionsDropdown" prefHeight="26.0" prefWidth="170.0" />
+                  <ChoiceBox fx:id="firstLevelDivisionsDropdown" prefHeight="26.0" prefWidth="170.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

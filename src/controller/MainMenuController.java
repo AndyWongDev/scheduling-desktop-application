@@ -9,16 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
+import utils.Warning;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,6 +24,9 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class MainMenuController implements Initializable {
+    private static Appointment selectedAppointment;
+    private static Customer selectedCustomer;
+
     Stage stage;
     Parent scene;
 
@@ -191,10 +190,15 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void onActionModifyCustomerButton(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/ModifyCustomer.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+        if (customerTableView.getSelectionModel().isEmpty()) {
+            Warning.generateMessage("No Customer was selected in the Tableview!", Alert.AlertType.WARNING);
+        } else {
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/ModifyCustomer.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
     @FXML
@@ -202,4 +206,11 @@ public class MainMenuController implements Initializable {
 
     }
 
+    public static Appointment getSelectedAppointment() {
+        return selectedAppointment;
+    }
+
+    public static Customer getSelectedCustomer() {
+        return selectedCustomer;
+    }
 }

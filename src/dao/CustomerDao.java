@@ -81,4 +81,42 @@ public class CustomerDao {
         }
         return false;
     }
+
+    public static Boolean updateCustomer(Customer customer) {
+        String selectStatement = "UPDATE customers " +
+                "SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? " +
+                "WHERE Customer_ID = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            preparedStatement.setString(1, customer.getName());
+            preparedStatement.setString(2, customer.getAddress());
+            preparedStatement.setString(3, customer.getPostalCode());
+            preparedStatement.setString(4, customer.getPhone());
+            preparedStatement.setTimestamp(5, TimezoneConverter.getUTCTime());
+            preparedStatement.setString(6, LoginDao.getCurrentUser().getName());
+            preparedStatement.setInt(7, customer.getDivisionId());
+            preparedStatement.setInt(8, customer.getId());
+
+            preparedStatement.execute();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void deleteCustomer(int id) {
+        String selectStatement = "DELETE FROM customers WHERE Customer_ID = ?";
+        try {
+            DBQuery.setPreparedStatement(connection, selectStatement);
+            PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

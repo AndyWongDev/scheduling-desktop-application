@@ -1,18 +1,42 @@
 package controller;
 
+import dao.CountryDao;
+import dao.CustomerDao;
+import dao.FirstLevelDivisionDao;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Customer;
+import utils.Warning;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ModifyCustomerController {
+public class ModifyCustomerController implements Initializable {
+
+    @Override()
+    public void initialize(URL url, ResourceBundle rb) {
+        countryDropdown.setItems(CountryDao.getCountryList());
+
+        Customer selectedCustomer = MainMenuController.getSelectedCustomer();
+        idText.setText(String.valueOf(selectedCustomer.getId()));
+        nameText.setText(selectedCustomer.getName());
+        addressText.setText(selectedCustomer.getAddress());
+        postalCodeText.setText(selectedCustomer.getPostalCode());
+        phoneText.setText(selectedCustomer.getPhone());
+        countryDropdown.setValue(CountryDao.getCountryFromFirstLevelDivisionId(selectedCustomer.getDivisionId()));
+        firstLevelDivisionsDropdown.setValue(FirstLevelDivisionDao.getDivisionFromId(selectedCustomer.getDivisionId()));
+    }
 
     Stage stage;
     Parent scene;
@@ -33,10 +57,10 @@ public class ModifyCustomerController {
     private TextField phoneText;
 
     @FXML
-    private ChoiceBox<?> countryDropdown;
+    private ChoiceBox<String> countryDropdown;
 
     @FXML
-    private ChoiceBox<?> firstNameDivisionsDropdown;
+    private ChoiceBox<String> firstLevelDivisionsDropdown;
 
     @FXML
     private Button cancelButton;
@@ -56,13 +80,44 @@ public class ModifyCustomerController {
     }
 
     @FXML
-    void onActionDeleteButton(ActionEvent event) {
-
+    void onActionDeleteButton(ActionEvent event) throws IOException {
+        int id = Integer.parseInt(idText.getText());
+        CustomerDao.deleteCustomer(id);
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
     @FXML
     void onActionSaveButton(ActionEvent event) {
+        try {
+            int id = Integer.parseInt(idText.getText());
+            String name = nameText.getText();
+            String address = addressText.getText();
+            String postalCode = postalCodeText.getText();
+            String phone = phoneText.getText();
+            int divisionId = FirstLevelDivisionDao.getIdFromDivision(firstLevelDivisionsDropdown.getValue());
 
+            Customer customer = new Customer(id, name, address, postalCode, phone, divisionId);
+            Boolean result = CustomerDao.updateCustomer(customer);
+
+            if (result) {
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            } else {
+                Warning.generateMessage("Invalid Inputs, try again", Alert.AlertType.ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    @FXML
+    void onActionCountryDropdown(ActionEvent event) {
+        ObservableList<String> firstLevelDivisionList = FirstLevelDivisionDao.getFirstLevelDivisionList(countryDropdown.getValue());
+        firstLevelDivisionsDropdown.setItems(firstLevelDivisionList);
+    }
 }

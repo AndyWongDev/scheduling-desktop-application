@@ -41,6 +41,16 @@ public class Customer {
         this.formattedAddress = getFormattedAddress();
     }
 
+    public Customer(int id, String name, String address, String postalCode, String phone, int divisionId) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.divisionId = divisionId;
+        this.formattedAddress = getFormattedAddress();
+    }
+
     public Customer(String name, String address, String postalCode, String phone, int divisionId) {
         this.name = name;
         this.address = address;
