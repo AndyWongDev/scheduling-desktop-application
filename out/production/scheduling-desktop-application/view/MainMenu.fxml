@@ -62,7 +62,7 @@
                   <Font size="25.0" />
                </font>
             </Label>
-            <RadioButton fx:id="viewWeekButton" mnemonicParsing="false" text="View Week">
+            <RadioButton fx:id="viewWeekButton" mnemonicParsing="false" onAction="#onActionDatePicker" text="View Week">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -73,7 +73,7 @@
                   <ToggleGroup fx:id="viewToggle" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="viewMonthButton" mnemonicParsing="false" text="View Month" toggleGroup="$viewToggle">
+            <RadioButton fx:id="viewMonthButton" mnemonicParsing="false" onAction="#onActionDatePicker" text="View Month" toggleGroup="$viewToggle">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -81,7 +81,7 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </RadioButton>
-            <RadioButton fx:id="viewAllButton" mnemonicParsing="false" selected="true" text="View All" toggleGroup="$viewToggle">
+            <RadioButton fx:id="viewAllButton" mnemonicParsing="false" onAction="#onActionDatePicker" selected="true" text="View All" toggleGroup="$viewToggle">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -89,7 +89,7 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </RadioButton>
-            <DatePicker fx:id="datePicker">
+            <DatePicker fx:id="datePicker" onAction="#onActionDatePicker">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -101,15 +101,15 @@
       </HBox>
       <TableView fx:id="calendarTableView" layoutX="1.0" layoutY="166.0" prefHeight="300.0" prefWidth="900.0">
         <columns>
-          <TableColumn fx:id="appIdCol" prefWidth="63.0" text="App ID" />
-          <TableColumn fx:id="titleCol" prefWidth="114.0" text="Title" />
-            <TableColumn fx:id="descriptionCol" prefWidth="137.0" text="Description" />
-            <TableColumn fx:id="locationCol" minWidth="0.0" prefWidth="118.0" text="Location" />
-            <TableColumn fx:id="contactCol" prefWidth="124.0" text="Contact" />
-            <TableColumn fx:id="typeCol" minWidth="0.0" prefWidth="82.0" text="Type" />
-            <TableColumn fx:id="startCol" minWidth="2.0" prefWidth="71.0" text="Start" />
-            <TableColumn fx:id="endCol" prefWidth="88.0" text="End" />
-            <TableColumn fx:id="appCustomerIdCol" prefWidth="102.0" text="Customer ID" />
+          <TableColumn fx:id="appIdCol" prefWidth="57.0" text="App ID" />
+          <TableColumn fx:id="titleCol" prefWidth="86.0" text="Title" />
+            <TableColumn fx:id="descriptionCol" prefWidth="90.0" text="Description" />
+            <TableColumn fx:id="locationCol" minWidth="0.0" prefWidth="99.0" text="Location" />
+            <TableColumn fx:id="contactCol" text="Contact" />
+            <TableColumn fx:id="typeCol" minWidth="0.0" prefWidth="78.0" text="Type" />
+            <TableColumn fx:id="startCol" minWidth="2.0" prefWidth="179.0" text="Start" />
+            <TableColumn fx:id="endCol" prefWidth="175.0" text="End" />
+            <TableColumn fx:id="appCustomerIdCol" prefWidth="55.0" text="Customer ID" />
         </columns>
       </TableView>
       <Label layoutX="383.0" layoutY="477.0" text="Customers">

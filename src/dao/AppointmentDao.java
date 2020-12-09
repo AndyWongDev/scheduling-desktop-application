@@ -1,14 +1,14 @@
 package dao;
 
+import controller.MainMenuController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
-import model.Customer;
 import utils.DBConnection;
 import utils.DBQuery;
-import utils.TimezoneConverter;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public class AppointmentDao {
     private static Connection connection = DBConnection.getConnection();
@@ -17,11 +17,35 @@ public class AppointmentDao {
     public AppointmentDao() {
     }
 
-    public static ObservableList<Appointment> getAppointmentList() {
-        String selectStatement = "SELECT * FROM appointments";
+    public static ObservableList<Appointment> getAppointmentList(String selectedFilter) {
+        LocalDate selectedDate = MainMenuController.getSelectedDate();
+        String sqlStatement = "SELECT * FROM appointments";
+
         try {
-            DBQuery.setPreparedStatement(connection, selectStatement);
+            switch(selectedFilter) {
+                case "View Month":
+                    sqlStatement += " WHERE MONTH(Start) = ? AND YEAR(Start) = ?";
+                    DBQuery.setPreparedStatement(connection, sqlStatement);
+                    break;
+                case "View Week":
+                    sqlStatement += " WHERE WEEK(Start) = WEEK(?) AND YEAR(Start) = ?";
+                    break;
+            }
+
+            DBQuery.setPreparedStatement(connection, sqlStatement);
             PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
+
+            switch(selectedFilter) {
+                case "View Month":
+                    preparedStatement.setInt(1, selectedDate.getMonthValue());
+                    preparedStatement.setInt(2, selectedDate.getYear());
+                    break;
+                case "View Week":
+                    preparedStatement.setString(1, selectedDate.toString());
+                    preparedStatement.setInt(2, selectedDate.getYear());
+                    break;
+            }
+
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
             appointmentList.clear();

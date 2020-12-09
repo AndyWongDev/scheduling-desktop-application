@@ -107,6 +107,7 @@ public class ModifyAppointmentController implements Initializable {
     void onActionDeleteButton(ActionEvent event) throws IOException {
         int id = Integer.parseInt(idText.getText());
         AppointmentDao.deleteAppointment(id);
+        Warning.generateMessage("Appointment Deleted", Alert.AlertType.CONFIRMATION);
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
         stage.setScene(new Scene(scene));

@@ -20,6 +20,8 @@ import utils.Warning;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ResourceBundle;
 
 public class ModifyCustomerController implements Initializable {
@@ -82,7 +84,14 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     void onActionDeleteButton(ActionEvent event) throws IOException {
         int id = Integer.parseInt(idText.getText());
-        CustomerDao.deleteCustomer(id);
+
+        try {
+            CustomerDao.deleteCustomer(id);
+            Warning.generateMessage("Customer Deleted", Alert.AlertType.CONFIRMATION);
+        } catch (SQLException e) {
+            Warning.generateMessage("Customers assigned to Appointments cannot be deleted.", Alert.AlertType.WARNING);
+        }
+
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/MainMenu.fxml"));
         stage.setScene(new Scene(scene));

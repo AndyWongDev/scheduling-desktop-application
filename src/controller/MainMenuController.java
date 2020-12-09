@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 public class MainMenuController implements Initializable {
     private static Appointment selectedAppointment;
     private static Customer selectedCustomer;
+    private static LocalDate selectedDate = LocalDate.now();
 
     Stage stage;
     Parent scene;
@@ -32,14 +33,14 @@ public class MainMenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         /**
-         * Set default value of DatePicker to Today
+         * Set default value of DatePicker
          */
-        datePicker.setValue(LocalDate.now());
+        datePicker.setValue(selectedDate);
 
         /**
          * Add properties from Appointment model
          */
-        calendarTableView.setItems(AppointmentDao.getAppointmentList());
+        calendarTableView.setItems(AppointmentDao.getAppointmentList("View All"));
         appIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -210,6 +211,13 @@ public class MainMenuController implements Initializable {
 
     }
 
+    @FXML
+    void onActionDatePicker(ActionEvent event) {
+        selectedDate = datePicker.getValue();
+        String selectedFilter = ((RadioButton)viewToggle.getSelectedToggle()).getText();
+        calendarTableView.setItems(AppointmentDao.getAppointmentList(selectedFilter));
+    }
+
     public static Appointment getSelectedAppointment() {
         return selectedAppointment;
     }
@@ -217,4 +225,9 @@ public class MainMenuController implements Initializable {
     public static Customer getSelectedCustomer() {
         return selectedCustomer;
     }
+
+    public static LocalDate getSelectedDate() {
+        return selectedDate;
+    }
+
 }

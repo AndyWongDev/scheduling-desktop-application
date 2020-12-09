@@ -46,11 +46,15 @@ public class CustomerDao {
         return customerList;
     }
 
+    /**
+     * B. Write at least two different lambda expressions to improve your code.
+     * Maps ObservableList<Customer> customerList to an ObservableList<String> to populate dropdown
+     *
+     * @return customerNameList
+     */
     public static ObservableList<String> getCustomerNameList() {
         ObservableList<String> customerNameList = FXCollections.observableArrayList();
-        for (Customer customer : customerList) {
-            customerNameList.add(customer.getName());
-        }
+        customerList.forEach(customer -> customerNameList.add(customer.getName()));
         return customerNameList;
     }
 
@@ -115,16 +119,12 @@ public class CustomerDao {
         return false;
     }
 
-    public static void deleteCustomer(int id) {
+    public static void deleteCustomer(int id) throws SQLException {
         String selectStatement = "DELETE FROM customers WHERE Customer_ID = ?";
-        try {
             DBQuery.setPreparedStatement(connection, selectStatement);
             PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
             preparedStatement.setInt(1, id);
             preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public static int getCustomerIdFromName(String name) {
