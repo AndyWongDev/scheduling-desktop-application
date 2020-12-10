@@ -91,4 +91,16 @@ public class FirstLevelDivisionDao {
         }
         return "N/A";
     }
+
+    /**
+     * B. Write at least two different lambda expressions to improve your code.
+     * Maps ObservableList<Customer> customerList to an ObservableList<String> to populate dropdown
+     *
+     * @return customerNameList
+     */
+    public static ObservableList<String> getFirstLevelDivisionNameList() {
+        ObservableList<String> firstLevelDivisionNameList = FXCollections.observableArrayList();
+        firstLevelDivisionList.forEach(fld -> firstLevelDivisionNameList.add(fld.toString()));
+        return firstLevelDivisionNameList;
+    }
 }
