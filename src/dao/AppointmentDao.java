@@ -191,7 +191,8 @@ public class AppointmentDao {
     public static void getUpcomingAppointment() {
         String selectStatement = "SELECT * " +
                 "FROM appointments " +
-                "WHERE Start > NOW() + INTERVAL -15 MINUTE";
+                "WHERE Start < DATE_ADD(NOW(), INTERVAL 15 MINUTE)" +
+                "AND Start > NOW()";
 
         try {
             DBQuery.setPreparedStatement(connection, selectStatement);
@@ -204,7 +205,7 @@ public class AppointmentDao {
                 int id = resultSet.getInt("Appointment_ID");
                 Timestamp start = resultSet.getTimestamp("Start");
 
-                String appointmentNotification = String.format("Upcoming Appointment! ID: %s Start: %s",id, start.toString());
+                String appointmentNotification = String.format("Appointment! ID: %s Starts: %s",id, start.toString());
                 Warning.generateMessage(appointmentNotification, Alert.AlertType.INFORMATION);
             } else {
                 Warning.generateMessage("No Appointments Coming Up in 15 Minutes", Alert.AlertType.INFORMATION);
