@@ -95,6 +95,12 @@ public class ModifyAppointmentController implements Initializable {
     @FXML
     private Button deleteButton;
 
+    /**
+     * Controller to return to Main Menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCancelButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -103,6 +109,12 @@ public class ModifyAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to delete Appointments
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionDeleteButton(ActionEvent event) throws IOException {
         int id = Integer.parseInt(idText.getText());
@@ -114,6 +126,11 @@ public class ModifyAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to save Appointment modifications
+     *
+     * @param event
+     */
     @FXML
     void onActionSaveButton(ActionEvent event) {
         try {

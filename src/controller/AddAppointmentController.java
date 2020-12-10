@@ -74,6 +74,12 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private Button saveButton;
 
+    /**
+     * Controller to return the Main Menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCancelButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -82,6 +88,11 @@ public class AddAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to save new Appointment if inputs are valid
+     *
+     * @param event
+     */
     @FXML
     void onActionSaveButton(ActionEvent event) {
         try {

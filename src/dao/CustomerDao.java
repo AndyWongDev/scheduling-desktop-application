@@ -16,6 +16,11 @@ public class CustomerDao {
     CustomerDao() {
     }
 
+    /**
+     * GET Request for All Customers from customers table
+     *
+     * @return ObservableList<Customer> customerList
+     */
     public static ObservableList<Customer> getCustomerList() {
         String selectStatement = "SELECT * FROM customers";
         try {
@@ -50,6 +55,8 @@ public class CustomerDao {
      * B. Write at least two different lambda expressions to improve your code.
      * Maps ObservableList<Customer> customerList to an ObservableList<String> to populate dropdown
      *
+     * Allows for linear search for customerNames without needing to query the database for redundant information
+     *
      * @return customerNameList
      */
     public static ObservableList<String> getCustomerNameList() {
@@ -58,6 +65,12 @@ public class CustomerDao {
         return customerNameList;
     }
 
+    /**
+     * POST Request to insert valid Customers into the customer table
+     *
+     * @param customer
+     * @return
+     */
     public static Boolean addCustomer(Customer customer) {
         String insertStatement = "INSERT INTO customers (" +
                 "Customer_Name, " +
@@ -93,6 +106,12 @@ public class CustomerDao {
         return false;
     }
 
+    /**
+     * UPDATE request to for existing Customers in the customers table
+     *
+     * @param customer
+     * @return
+     */
     public static Boolean updateCustomer(Customer customer) {
         String selectStatement = "UPDATE customers " +
                 "SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? " +
@@ -119,6 +138,12 @@ public class CustomerDao {
         return false;
     }
 
+    /**
+     * DELETE request for Customers in the customers table
+     *
+     * @param id
+     * @throws SQLException
+     */
     public static void deleteCustomer(int id) throws SQLException {
         String selectStatement = "DELETE FROM customers WHERE Customer_ID = ?";
             DBQuery.setPreparedStatement(connection, selectStatement);
@@ -127,6 +152,12 @@ public class CustomerDao {
             preparedStatement.execute();
     }
 
+    /**
+     * Row level fetch request for customerId from customeName
+     *
+     * @param name
+     * @return
+     */
     public static int getCustomerIdFromName(String name) {
         String selectStatement = "SELECT Customer_ID " +
                 "FROM customers " +
@@ -148,6 +179,12 @@ public class CustomerDao {
         return -1;
     }
 
+    /**
+     * Row level fetch request for customerName from customerId
+     *
+     * @param id
+     * @return
+     */
     public static String getCustomerNameFromId(int id) {
         String selectStatement = "SELECT Customer_Name " +
                 "FROM customers " +

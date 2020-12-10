@@ -164,6 +164,12 @@ public class MainMenuController implements Initializable {
     @FXML
     private TableColumn<Customer, Integer> divisionIdCol;
 
+    /**
+     * Controller to navigate to AddAppointment view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAddAppointmentButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -172,6 +178,12 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to navigate to AddCustomer view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAddCustomerButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -180,6 +192,12 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to navigate to ModifyAppointment view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionModifyAppointmentButton(ActionEvent event) throws IOException {
         selectedAppointment = calendarTableView.getSelectionModel().getSelectedItem();
@@ -193,6 +211,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Controller to navigate to ModifyCustomer view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionModifyCustomerButton(ActionEvent event) throws IOException {
         selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
@@ -206,6 +230,12 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    /**
+     * Controller to navigate to Reports view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionReportsButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -214,6 +244,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to filter Appointments Table View dynamically
+     *
+     * @param event
+     */
     @FXML
     void onActionDatePicker(ActionEvent event) {
         selectedDate = Timestamp.valueOf(datePicker.getValue().atStartOfDay());
@@ -221,16 +256,30 @@ public class MainMenuController implements Initializable {
         calendarTableView.setItems(AppointmentDao.getAppointmentList(selectedFilter));
     }
 
+    /**
+     * Getter for static selectedAppointment
+     *
+     * @return selectedAppointment
+     */
     public static Appointment getSelectedAppointment() {
         return selectedAppointment;
     }
 
+    /**
+     * Getter for static selectedCustomer
+     *
+     * @return selectedCustomer
+     */
     public static Customer getSelectedCustomer() {
         return selectedCustomer;
     }
 
+    /**
+     * Getter for static selectedDate
+     *
+     * @return selectedDate
+     */
     public static Timestamp getSelectedDate() {
         return selectedDate;
     }
-
 }

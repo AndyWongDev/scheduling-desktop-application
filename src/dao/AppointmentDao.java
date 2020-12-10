@@ -19,6 +19,12 @@ public class AppointmentDao {
     public AppointmentDao() {
     }
 
+    /**
+     * GET Request for All Appointments from appointments table
+     *
+     * @param selectedFilter
+     * @return
+     */
     public static ObservableList<Appointment> getAppointmentList(String selectedFilter) {
         Timestamp selectedDate = MainMenuController.getSelectedDate();
         String sqlStatement = "SELECT *, Start + INTERVAL ? HOUR as Local_Start, End + INTERVAL ? HOUR as Local_End FROM appointments";
@@ -75,6 +81,12 @@ public class AppointmentDao {
         return appointmentList;
     }
 
+    /**
+     * Add valid appointment to appointments table
+     *
+     * @param appointment
+     * @return boolean
+     */
     public static Boolean addAppointment(Appointment appointment) {
         String insertStatement = "INSERT INTO appointments (" +
                 "Title, " +
@@ -109,6 +121,12 @@ public class AppointmentDao {
         return false;
     }
 
+    /**
+     * Updates valid appointment to appointments table
+     *
+     * @param appointment
+     * @return
+     */
     public static Boolean updateAppointment(Appointment appointment) {
         String selectStatement = "UPDATE appointments " +
                 "SET Title = ?, Description = ?, Location = ?, Contact_ID = ?, Type = ?, Start = ?, End = ?, Customer_ID = ? " +
@@ -136,6 +154,11 @@ public class AppointmentDao {
         return false;
     }
 
+    /**
+     * Deletes valid appointment from appointments table
+     *
+     * @param id
+     */
     public static void deleteAppointment(int id) {
         String selectStatement = "DELETE FROM appointments WHERE Appointment_ID = ?";
         try {
@@ -148,10 +171,21 @@ public class AppointmentDao {
         }
     }
 
+    /**
+     * Sets static appointmentList for Dao to management view state
+     *
+     * @param appointmentList
+     */
     public void setAppointmentList(ObservableList<Appointment> appointmentList) {
         this.appointmentList = appointmentList;
     }
 
+    /**
+     * Checks for schedule conflicts with selected appointment
+     *
+     * @param appointment
+     * @return boolean
+     */
     private static Boolean hasAppointmentConflicts(Appointment appointment) {
         String selectStatement = "SELECT Local_Start, Local_End " +
                 "FROM (SELECT Start + INTERVAL ? HOUR as Local_Start, End + INTERVAL ? HOUR as Local_End " +
@@ -184,6 +218,12 @@ public class AppointmentDao {
         return false;
     }
 
+    /**
+     * Validates that appointment is valid by checking schedule conflicts and office hours
+     *
+     * @param appointment
+     * @return
+     */
     public static Boolean isValidAppointment(Appointment appointment) {
         return (!hasAppointmentConflicts(appointment) && TimezoneUtil.isOfficeHours(appointment));
     }

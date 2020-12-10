@@ -17,6 +17,11 @@ public class ContactDao {
     public ContactDao() {
     }
 
+    /**
+     * GET Request for All Contacts from contacts table
+     *
+     * @return ObservableList<String> contactList
+     */
     public static ObservableList<String> getContactList() {
         String selectStatement = "SELECT * FROM contacts";
         contactList.clear();
@@ -35,6 +40,12 @@ public class ContactDao {
         return contactList;
     }
 
+    /**
+     * Row level fetch request for contactId from contactName
+     *
+     * @param name
+     * @return
+     */
     public static int getContactIdFromName(String name) {
         String selectStatement = "SELECT Contact_ID " +
                 "FROM contacts " +
@@ -56,6 +67,12 @@ public class ContactDao {
         return -1;
     }
 
+    /**
+     * Row level fetch request for contactName from contactId
+     *
+     * @param id
+     * @return
+     */
     public static String getContactNameFromId(int id) {
         String selectStatement = "SELECT Contact_Name " +
                 "FROM contacts " +

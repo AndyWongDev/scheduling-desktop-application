@@ -16,6 +16,11 @@ import java.sql.SQLException;
 public class ReportsDao {
     private static Connection connection = DBConnection.getConnection();
 
+    /**
+     * GET Request for All Appointments from appointments table for report
+     *
+     * @return ObservableList<Appointment> appointmentReport
+     */
     public static ObservableList<Appointment> getAppointmentReport() {
         ObservableList<Appointment> appointmentReport = FXCollections.observableArrayList();
         String sqlStatement = "SELECT Type, Month(Start) as Start_Month, Count(*) as Total " +
@@ -46,6 +51,11 @@ public class ReportsDao {
         return appointmentReport;
     }
 
+    /**
+     * GET Request for All Country with quantity of appointments in each
+     *
+     * @return ObservableList<Country> appointmentByCountryReport
+     */
     public static ObservableList<Country> getAppointmentsByCountryReport() {
         ObservableList<Country> appointmentByCountryReport = FXCollections.observableArrayList();
         String sqlStatement = "SELECT Country, Count(Appointment_ID) as Total " +
@@ -79,6 +89,12 @@ public class ReportsDao {
         return appointmentByCountryReport;
     }
 
+    /**
+     * GET Request for All Appointments from appointments table for specified Contact
+     *
+     * @param contactId
+     * @return ObservableList<Appointment> contactScheduleReport
+     */
     public static ObservableList<Appointment> getContactScheduleReport(int contactId) {
         ObservableList<Appointment> contactScheduleReport = FXCollections.observableArrayList();
         String sqlStatement = "SELECT * " +

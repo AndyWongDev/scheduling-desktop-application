@@ -29,6 +29,13 @@ public class LoginDao {
         LoginDao.currentUser = currentUser;
     }
 
+    /**
+     * Queries against users table for matching username and password
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     public static Boolean userLogin(String username, String password) {
         String selectStatement = "SELECT * FROM users WHERE User_Name=? AND Password=?";
         try {
@@ -60,6 +67,8 @@ public class LoginDao {
      * C. Write code that provides the ability to track user activity by recording all user log-in attempts, dates,
      * and time stamps and whether each attempt was successful in a file named login_activity.txt.
      * Append each new record to the existing file, and save to the root folder of the application.
+     *
+     * File output located in login_activity.txt in root directory
      *
      * @param status
      * @param username

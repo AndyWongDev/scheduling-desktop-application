@@ -55,6 +55,12 @@ public class AddCustomerController implements Initializable {
     @FXML
     private Button saveButton;
 
+    /**
+     * Controller to return to Main Menu
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCancelButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -63,12 +69,22 @@ public class AddCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to allow dynamic update of FirstLevelDivision Dropdown based on current Country Dropdown value
+     *
+     * @param event
+     */
     @FXML
     void onActionCountryDropdown(ActionEvent event) {
         ObservableList<String> firstLevelDivisionList = FirstLevelDivisionDao.getFirstLevelDivisionList(countryDropdown.getValue());
         firstLevelDivisionsDropdown.setItems(firstLevelDivisionList);
     }
 
+    /**
+     * Controller to save new Customer if inputs are valid
+     *
+     * @param event
+     */
     @FXML
     void onActionSaveButton(ActionEvent event) {
         try {

@@ -114,6 +114,12 @@ public class ReportsController implements Initializable {
     @FXML
     private Button backButton;
 
+    /**
+     * Controller to return to MainMenu view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionBackButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -122,6 +128,11 @@ public class ReportsController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to dynamically populate Appointments for selected Contacts options
+     *
+     * @param event
+     */
     @FXML
     void onActionContactDropDown(ActionEvent event) {
         selectedContactName = contactDropdown.getValue();

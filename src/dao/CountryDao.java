@@ -15,6 +15,11 @@ public class CountryDao {
     public CountryDao() {
     }
 
+    /**
+     * GET Request for All Countries from countries table
+     *
+     * @return ObservableList<String> countryList
+     */
     public static ObservableList<String> getCountryList() {
         String selectStatement = "SELECT * FROM countries";
         try {
@@ -42,6 +47,12 @@ public class CountryDao {
         return countryList;
     }
 
+    /**
+     * Row level fetch request for countryName from countryId
+     *
+     * @param id
+     * @return
+     */
     public static String getCountryFromId(int id) {
         String selectStatement = "SELECT Country " +
                 "FROM countries " +
@@ -63,6 +74,12 @@ public class CountryDao {
         return "N/A";
     }
 
+    /**
+     * Row level fetch request for countryName from firstLevelDivisionId
+     *
+     * @param divisionId
+     * @return
+     */
     public static String getCountryFromFirstLevelDivisionId(int divisionId) {
         String selectStatement = "SELECT Country " +
                 "FROM first_level_divisions fld " +

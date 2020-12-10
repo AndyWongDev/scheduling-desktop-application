@@ -68,6 +68,12 @@ public class LoginController implements Initializable {
     @FXML
     private Label languageText;
 
+    /**
+     * Validates username and password against database and attempts login
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionLoginButton(ActionEvent event) throws IOException {
         String username = usernameText.getText();
@@ -90,6 +96,11 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Controller to allow user to clear username and password textbox
+     *
+     * @param event
+     */
     @FXML
     void onActionResetButton(ActionEvent event) {
         usernameText.clear();

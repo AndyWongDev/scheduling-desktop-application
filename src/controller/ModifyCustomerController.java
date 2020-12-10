@@ -21,7 +21,6 @@ import utils.Warning;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ResourceBundle;
 
 public class ModifyCustomerController implements Initializable {
@@ -73,6 +72,12 @@ public class ModifyCustomerController implements Initializable {
     @FXML
     private Button deleteButton;
 
+    /**
+     * Controller to return to MainMenu view
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionCancelButton(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -81,6 +86,12 @@ public class ModifyCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to delete Customers without associated Appointments
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionDeleteButton(ActionEvent event) throws IOException {
         int id = Integer.parseInt(idText.getText());
@@ -98,6 +109,11 @@ public class ModifyCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Controller to save Customer modifications
+     *
+     * @param event
+     */
     @FXML
     void onActionSaveButton(ActionEvent event) {
         try {
@@ -124,6 +140,11 @@ public class ModifyCustomerController implements Initializable {
         }
     }
 
+    /**
+     * Controller to dynamically populate First Level Division Dropdown options based on Country Dropdown value
+     *
+     * @param event
+     */
     @FXML
     void onActionCountryDropdown(ActionEvent event) {
         ObservableList<String> firstLevelDivisionList = FirstLevelDivisionDao.getFirstLevelDivisionList(countryDropdown.getValue());
