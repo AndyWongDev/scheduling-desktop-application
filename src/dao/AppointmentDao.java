@@ -188,21 +188,25 @@ public class AppointmentDao {
      */
     private static Boolean hasAppointmentConflicts(Appointment appointment) {
         String selectStatement = "SELECT Local_Start, Local_End " +
-                "FROM (SELECT Start + INTERVAL ? HOUR as Local_Start, End + INTERVAL ? HOUR as Local_End " +
+                "FROM (SELECT Appointment_ID, Start + INTERVAL ? HOUR as Local_Start, End + INTERVAL ? HOUR as Local_End " +
                 "FROM appointments " +
-                "WHERE Customer_ID = ?) LocalTimeTable " +
-                "WHERE Local_Start < ? " +
-                "AND Local_End > ?";
+                "WHERE Customer_ID = ? " +
+                "AND Appointment_ID != ?) LocalTimeTable " +
+                "WHERE ? BETWEEN Local_Start AND Local_End " +
+                "OR ? BETWEEN Local_Start AND Local_End";
 
         try {
             DBQuery.setPreparedStatement(connection, selectStatement);
             PreparedStatement preparedStatement = DBQuery.getPreparedStatement();
 
-            preparedStatement.setInt(1, TimezoneUtil.getOffsetToLocalTime());
-            preparedStatement.setInt(2, TimezoneUtil.getOffsetToLocalTime());
+            preparedStatement.setInt(1, 0);
+            preparedStatement.setInt(2, 0);
+//            preparedStatement.setInt(1, TimezoneUtil.getOffsetToLocalTime());
+//            preparedStatement.setInt(2, TimezoneUtil.getOffsetToLocalTime());
             preparedStatement.setInt(3, appointment.getCustomerId());
-            preparedStatement.setTimestamp(4, appointment.getEnd());
+            preparedStatement.setInt(4, appointment.getId());
             preparedStatement.setTimestamp(5, appointment.getStart());
+            preparedStatement.setTimestamp(6, appointment.getEnd());
 
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
@@ -245,7 +249,7 @@ public class AppointmentDao {
                 int id = resultSet.getInt("Appointment_ID");
                 Timestamp start = resultSet.getTimestamp("Start");
 
-                String appointmentNotification = String.format("Appointment! ID: %s Starts: %s",id, start.toString());
+                String appointmentNotification = String.format("Appointment! ID: %s Starts: %s", id, start.toString());
                 Warning.generateMessage(appointmentNotification, Alert.AlertType.INFORMATION);
             } else {
                 Warning.generateMessage("No Appointments Coming Up in 15 Minutes", Alert.AlertType.INFORMATION);
